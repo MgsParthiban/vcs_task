@@ -1,26 +1,20 @@
-FROM node:latest as docker
+FROM node:latest
 
 WORKDIR /opt
 
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx
+
 COPY package.* /opt/
-
 RUN npm install
-
 COPY . .
 
-EXPOSE 3005
+# Copy the Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD [ "npm", "start" ]
-
-FROM nginx:latest 
-
-COPY --from=docker /opt /usr/share/nginx/html/
-
-RUN rm /etc/nginx/conf.d/default.conf
-
-COPY nginx.conf /etc/nginx/conf.d/
-
+# Expose only port 80
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+# Start both Node.js and Nginx
+CMD ["sh", "-c", "node app.js & nginx -g 'daemon off;'"]
 
