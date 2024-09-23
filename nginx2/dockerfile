@@ -1,7 +1,20 @@
-FROM nginx:latest
-# Copy the built files from the previous stage
-COPY build/ /usr/share/nginx/html
-# Expose port 80 (the default HTTP port)
+FROM node:latest
+
+WORKDIR /opt
+
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx
+
+COPY package.* /opt/
+RUN npm install
+COPY . .
+
+# Copy the Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose only port 80
 EXPOSE 80
-# Start Nginx and keep it running in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+
+# Start both Node.js and Nginx
+CMD ["sh", "-c", "node app.js & nginx -g 'daemon off;'"]
+
