@@ -40,7 +40,7 @@ pipeline {
       }
       steps {
         script {
-          sh 'docker run -d --name cont1 -p 9090:8080 ${DOCKER_IMAGE}' // Removed -it and used -d for detached mode.
+          sh 'docker run -d --name cont1 -p 9090:8080 ${DOCKER_IMAGE}' // Removed -it and used -d for detached mode
         }
       }
     }
