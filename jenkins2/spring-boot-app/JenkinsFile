@@ -22,8 +22,7 @@ pipeline {
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "parthitk/ultimate-cicd:${BUILD_NUMBER}"
-        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
+        REGISTRY_CREDENTIALS = credentials('docker-cred') // ensure credentials are set up in Jenkins
       }
       steps {
         script {
@@ -35,17 +34,18 @@ pipeline {
         }
       }
     }
-    stage('create container') {
+    stage('Create Container') {
       environment {
         DOCKER_IMAGE = "parthitk/ultimate-cicd:${BUILD_NUMBER}"
       }
       steps {
         script {
-          sh 'docker run --itd --name cont1 -p 9090:8080 ${DOCKER_IMAGE}'
+          sh 'docker run -itd --name cont1 -p 9090:8080 ${DOCKER_IMAGE}' // Removed -it and used -d for detached mode
         }
       }
     }
-    post {
+  }
+  post {
     always {
         emailext (
             subject: "pipeline status : ${BUILD_NUMBER}",
@@ -57,7 +57,7 @@ pipeline {
                       </body>
                     </html>''',
             to: 'parthitk2006@gmail.com',
-            from: 'parthitk2006@gmail.com',
+            from: 'admin@gmail.com',
             replyTo: 'admin@gmail.com',
             mimeType: 'text/html'
         )
