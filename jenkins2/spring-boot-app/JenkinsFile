@@ -35,5 +35,15 @@ pipeline {
         }
       }
     }
+    stage('create container') {
+      environment {
+        DOCKER_IMAGE = "parthitk/ultimate-cicd:${BUILD_NUMBER}"
+      }
+      steps {
+        script {
+          sh 'docker run --itd --name cont1 -p 9090:8080 ${DOCKER_IMAGE}'
+        }
+      }
+    }    
   }
 }
