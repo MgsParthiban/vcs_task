@@ -55,7 +55,7 @@ pipeline {
                         <p> Build Number: ${BUILD_NUMBER}</p>
                         <p> check the  <a href="${BUILD_URL}">console out</a>.</p>
                       </body>
-                    </html> '''
+                    </html> ''',
           to: 'parthitk2006@gmail.com',
           from: 'admin@gmail.com',
           replyTo: 'admin@gmail.com'
