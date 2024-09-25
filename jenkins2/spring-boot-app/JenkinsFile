@@ -41,10 +41,27 @@ pipeline {
       }
       steps {
         script {
-          sh 'docker images'
-          sh 'docker run -itd --name cont1 -p 9090:8080 ${DOCKER_IMAGE}'
+          sh 'docker run --itd --name cont1 -p 9090:8080 ${DOCKER_IMAGE}'
         }
       }
-    }    
+    }
+    post {
+	    always {
+		    emailext (
+			    subject : "pipeline status : ${BUILD_NUMBER}",
+			    body: '''<html>
+                      <body>
+                        <p>Build status: ${BUILD_STATUS}</p>
+                        <p> Build Number: ${BUILD_NUMBER}</p>
+                        <p> check the  <a href="${BUILD_URL}">console out</a>.</p>
+                      </body>
+                    </html> '''
+          to: 'parthitk2006@gmail.com',
+          from: 'parthitk2006@gmail.com',
+          replyTo: 'admin@gmail.com'
+          mimeType: 'text/html'  
+        )
+      }
+    }
   }
 }
