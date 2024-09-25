@@ -40,7 +40,7 @@ pipeline {
       }
       steps {
         script {
-          sh 'docker run -itd --name cont1 -p 9090:8080 ${DOCKER_IMAGE}' // Removed -it and used -d for detached mode
+          sh 'docker run -d --name cont1 -p 9090:8080 ${DOCKER_IMAGE}' // Removed -it and used -d for detached mode
         }
       }
     }
@@ -57,7 +57,7 @@ pipeline {
                       </body>
                     </html>''',
             to: 'parthitk2006@gmail.com',
-            from: 'admin@gmail.com',
+            from: 'parthitk2006@gmail.com',
             replyTo: 'admin@gmail.com',
             mimeType: 'text/html'
         )
